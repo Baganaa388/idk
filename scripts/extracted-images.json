@@ -1,0 +1,26 @@
+[
+  {
+    "sku": "ZF-GEL-150",
+    "image": "/img/products/zerofit-firming-body-gel.webp"
+  },
+  {
+    "sku": "ZF-NIGHT-30",
+    "image": "/img/products/zerofit-night-capsule.webp"
+  },
+  {
+    "sku": "ZF-TEA-60",
+    "image": "/img/products/zerofit-tea.webp"
+  },
+  {
+    "sku": "SLC-SLIM-30",
+    "image": "/img/products/super-slim-capsule.webp"
+  },
+  {
+    "sku": "ZF-DAY-30",
+    "image": "/img/products/zerofit-day-capsule.webp"
+  },
+  {
+    "sku": "ZF-COFFEE-30",
+    "image": "/img/products/zerofit-coffee.webp"
+  }
+]

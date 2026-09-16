@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Удирдлага — Aktar Marka</title>
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<!-- ======= Нэвтрэх ======= -->
+<div id="loginView" class="login" hidden>
+  <div class="login__card card">
+    <div class="login__logo">
+      <img src="/img/brand/logo-mark-light.png" alt="">
+      <b>Aktar Marka</b>
+    </div>
+    <h1>Удирдлагын систем</h1>
+    <p class="login__sub">Админ эрхээрээ нэвтэрнэ үү</p>
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="loginUser">Нэвтрэх нэр</label>
+        <input class="input" id="loginUser" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="loginPass">Нууц үг</label>
+        <input class="input" id="loginPass" type="password" autocomplete="current-password" required>
+      </div>
+      <p class="error-text" id="loginError" hidden></p>
+      <button class="btn btn--primary btn--lg" type="submit" id="loginBtn">Нэвтрэх</button>
+    </form>
+    <a class="login__back" href="/">Дэлгүүр рүү буцах</a>
+  </div>
+</div>
+
+<!-- ======= Апп ======= -->
+<div id="appView" class="app" hidden>
+  <aside class="sidebar" id="sidebar">
+    <a class="sidebar__logo" href="#/dashboard">
+      <img src="/img/brand/logo-mark-light.png" alt="">
+      <div><b>Aktar Marka</b><span>Удирдлага</span></div>
+    </a>
+    <nav class="sidebar__nav" id="sideNav">
+      <a href="#/dashboard" data-route="dashboard"><span data-ic="gauge"></span>Хяналтын самбар</a>
+      <a href="#/orders" data-route="orders"><span data-ic="receipt"></span>Захиалга<em class="sidebar__badge" id="navOrdersBadge" hidden></em></a>
+      <a href="#/products" data-route="products"><span data-ic="box"></span>Бараа</a>
+      <a href="#/categories" data-route="categories"><span data-ic="layers"></span>Категори</a>
+      <a href="#/inventory" data-route="inventory"><span data-ic="warehouse"></span>Агуулах<em class="sidebar__badge" id="navStockBadge" hidden></em></a>
+      <a href="#/import" data-route="import"><span data-ic="upload"></span>Импорт</a>
+      <a href="#/customers" data-route="customers"><span data-ic="users"></span>Хэрэглэгчид</a>
+      <a href="#/analytics" data-route="analytics"><span data-ic="chart"></span>Анализ</a>
+      <a href="#/settings" data-route="settings"><span data-ic="sliders"></span>Тохиргоо</a>
+    </nav>
+    <a class="sidebar__store" href="/" target="_blank" rel="noopener"><span data-ic="external"></span>Дэлгүүр харах</a>
+    <div class="sidebar__foot">
+      <div class="sidebar__user">
+        <span class="sidebar__avatar" id="userAvatar">A</span>
+        <div><b id="userName">admin</b><span>Админ</span></div>
+      </div>
+      <button class="btn btn--icon sidebar__logout" id="logoutBtn" title="Гарах" aria-label="Гарах"><span data-ic="logout"></span></button>
+    </div>
+  </aside>
+  <div class="sidebar-back" id="sidebarBack"></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="btn btn--icon topbar__burger" id="burger" aria-label="Цэс"><span data-ic="menu"></span></button>
+      <div>
+        <h1 id="pageTitle">Хяналтын самбар</h1>
+        <p class="topbar__date num" id="topDate"></p>
+      </div>
+      <div class="topbar__right" id="topRight"></div>
+    </header>
+    <main id="view" class="view"></main>
+  </div>
+</div>
+
+<div id="modalHost"></div>
+
+<script src="/vendor/chart.umd.js"></script>
+<script src="/js/admin/ui.js"></script>
+<script src="/js/admin/dashboard.js"></script>
+<script src="/js/admin/orders.js"></script>
+<script src="/js/admin/products.js"></script>
+<script src="/js/admin/categories.js"></script>
+<script src="/js/admin/inventory.js"></script>
+<script src="/js/admin/import.js"></script>
+<script src="/js/admin/customers.js"></script>
+<script src="/js/admin/analytics.js"></script>
+<script src="/js/admin/settings.js"></script>
+<script src="/js/admin/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "aktar-marka-shop",
+  "version": "1.0.0",
+  "description": "Aktar Marka — QPay төлбөртэй, гишүүнчлэлийн хямдралтай онлайн дэлгүүр ба удирдлагын систем",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test test/*.test.js",
+    "seed": "node scripts/seed.js",
+    "extract": "node scripts/extract-images.js && node scripts/export-csv.js",
+    "admin": "node scripts/set-admin.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "express": "^5.2.1",
+    "multer": "^2.4.0",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.35.4"
+  }
+}
