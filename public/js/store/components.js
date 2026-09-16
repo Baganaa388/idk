@@ -165,10 +165,12 @@ export function renderPayBar() {
       </div>
       <img src="/img/pay/qpay.png" alt="QPay" class="paybar-qpay" height="40">
     </div>
-    <div class="marquee" aria-label="Төлбөр хүлээн авах банк, аппууд">
-      <div class="marquee-track">
-        <ul class="marquee-group">${items}</ul>
-        <ul class="marquee-group" aria-hidden="true">${items}</ul>
+    <div class="container">
+      <div class="marquee" aria-label="Төлбөр хүлээн авах банк, аппууд">
+        <div class="marquee-track">
+          <ul class="marquee-group">${items}</ul>
+          <ul class="marquee-group" aria-hidden="true">${items}</ul>
+        </div>
       </div>
     </div>`;
 }
@@ -380,7 +382,7 @@ export function priceHtml(price, compare, cls = '') {
   return `<div class="price ${cls}"><span class="price-now">${money(price)}</span>${hasCompare ? `<s class="price-old">${money(compare)}</s>` : ''}</div>`;
 }
 
-export function productCard(p, i = 0) {
+export function productCard(p, i = 0, { reveal = true } = {}) {
   const href = `/p/${encodeURIComponent(p.slug)}`;
   const off = Number(p.compare_price) > Number(p.price) ? Math.round((1 - p.price / p.compare_price) * 100) : 0;
   const badge = !p.in_stock
@@ -390,7 +392,7 @@ export function productCard(p, i = 0) {
       : p.low_stock
         ? '<span class="badge badge-warn">Цөөн үлдсэн</span>'
         : '';
-  return `<article class="pcard reveal" style="--d:${Math.min(i, 8) * 55}ms">
+  return `<article class="pcard${reveal ? ' reveal' : ''}" style="--d:${Math.min(i, 8) * 55}ms">
     <a href="${href}" class="pcard-img">
       ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" width="400" height="400">` : '<span class="img-ph"></span>'}
       ${badge ? `<span class="pcard-badges">${badge}</span>` : ''}
@@ -399,10 +401,12 @@ export function productCard(p, i = 0) {
       ${p.brand ? `<div class="pcard-brand">${esc(p.brand)}</div>` : ''}
       <a href="${href}" class="pcard-name" title="${esc(p.name)}">${esc(p.name)}</a>
       ${p.volume ? `<div class="pcard-meta">${esc(p.volume)}</div>` : ''}
-      ${priceHtml(p.price, p.compare_price)}
-      <button type="button" class="btn btn-outline btn-block pcard-add" data-add="${esc(p.id)}" ${p.in_stock ? '' : 'disabled'}>
-        <span class="add-icon">${icons.cart(18)}</span><span class="add-label">${p.in_stock ? 'Сагсанд нэмэх' : 'Дууссан'}</span>
-      </button>
+      <div class="pcard-foot">
+        ${priceHtml(p.price, p.compare_price)}
+        <button type="button" class="btn btn-outline pcard-add" data-add="${esc(p.id)}" ${p.in_stock ? '' : 'disabled'} aria-label="${p.in_stock ? 'Сагсанд нэмэх' : 'Дууссан'}: ${esc(p.name)}">
+          <span class="add-icon">${icons.cart(17)}</span><span class="add-label">${p.in_stock ? 'Сагслах' : 'Дууссан'}</span>
+        </button>
+      </div>
     </div>
   </article>`;
 }
@@ -461,9 +465,9 @@ export function skeleton(kind = 'default') {
   const grid = (n, cls = '') => `<div class="pgrid ${cls}">${card.repeat(n)}</div>`;
   let inner;
   if (kind === 'home') {
-    inner = `<div class="sk sk-hero"></div><div class="sk-row">${'<div class="sk sk-perk"></div>'.repeat(4)}</div><div class="sk sk-line sk-title"></div>${grid(6, 'pgrid-home')}`;
+    inner = `<div class="sk sk-hero"></div><div class="sk-row">${'<div class="sk sk-perk"></div>'.repeat(4)}</div><div class="sk sk-line sk-title"></div>${grid(4, 'pgrid-home')}`;
   } else if (kind === 'listing') {
-    inner = `<div class="sk sk-line sk-crumb"></div><div class="listing-layout"><div class="sk sk-side"></div><div><div class="sk sk-line sk-title"></div>${grid(8, 'pgrid-listing')}</div></div>`;
+    inner = `<div class="sk sk-line sk-crumb"></div><div class="listing-layout"><div class="sk sk-side"></div><div><div class="sk sk-line sk-title"></div>${grid(6, 'pgrid-listing')}</div></div>`;
   } else if (kind === 'product') {
     inner = `<div class="sk sk-line sk-crumb"></div><div class="pd"><div class="sk sk-gallery"></div><div class="sk-stack"><div class="sk sk-line w20"></div><div class="sk sk-line sk-h1"></div><div class="sk sk-line w40"></div><div class="sk sk-line sk-price"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div><div class="sk sk-btn sk-btn-lg"></div><div class="sk sk-box"></div></div></div>`;
   } else {

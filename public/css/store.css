@@ -5118,3 +5118,549 @@ html:not(.js-reveal) .lprogress-fill {
 .hero-prod-inner {
   overflow: hidden;
 }
+
+/* =====================================================================
+   v4: cutout hero, компакт карт, урсдаг барааны мөр, жижиг гишүүнчлэл
+   ===================================================================== */
+
+/* ---------- Төлбөрийн marquee: container дотор, ирмэгээр бүдгэрнэ ---------- */
+.paybar .marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+
+/* ---------- Hero: cutout группын зураг ---------- */
+.hero-group {
+  --k: 1;
+  position: relative;
+  height: 420px;
+  opacity: 0;
+  transition: opacity 0.35s ease-out;
+}
+.hero-group.is-ready {
+  opacity: 1;
+}
+.hero-floor {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: calc(14px * var(--k));
+  height: calc(40px * var(--k));
+  border-radius: 50%;
+  background: rgba(6, 74, 43, 0.2);
+  filter: blur(18px);
+}
+.hero-cut {
+  position: absolute;
+  left: var(--x, 50%);
+  bottom: calc(var(--b, 0px) * var(--k));
+  height: calc(var(--h, 200px) * var(--k));
+  z-index: var(--z, 1);
+  display: block;
+  transform: translateX(-50%);
+}
+.hero-cut img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  filter: drop-shadow(0 16px 14px rgba(16, 24, 20, 0.18));
+}
+.hero-cut img.is-fallback {
+  mix-blend-mode: multiply;
+  filter: none;
+}
+.hero-cut.slot-0 {
+  --x: 50%;
+  --b: 74px;
+  --h: 300px;
+  --z: 1;
+}
+.hero-cut.slot-1 {
+  --x: 21%;
+  --b: 58px;
+  --h: 236px;
+  --z: 2;
+}
+.hero-cut.slot-2 {
+  --x: 79%;
+  --b: 56px;
+  --h: 244px;
+  --z: 2;
+}
+.hero-cut.slot-3 {
+  --x: 35%;
+  --b: 16px;
+  --h: 168px;
+  --z: 3;
+}
+.hero-cut.slot-4 {
+  --x: 67%;
+  --b: 12px;
+  --h: 172px;
+  --z: 4;
+}
+.hero-group .hero-badge {
+  position: absolute;
+  left: 0;
+  right: auto;
+  top: 0;
+  width: 92px;
+  height: 92px;
+  z-index: 6;
+  animation: none;
+}
+.hero-group .hero-badge b {
+  font-size: 24px;
+}
+.hero-group .hero-price-card {
+  position: absolute;
+  top: 6px;
+  right: 0;
+  left: auto;
+  bottom: auto;
+  z-index: 6;
+  animation: none;
+}
+.hero-group .hero-price-thumb {
+  background: var(--surface);
+}
+
+/* ---------- Барааны карт: өргөн, намхан ---------- */
+.pgrid-listing {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.pgrid-home {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.pcard-img {
+  aspect-ratio: 4 / 3;
+  padding: 12px 16px 4px;
+}
+.pcard-body {
+  padding: 0 14px 14px;
+}
+.pcard-brand {
+  font-size: 11px;
+}
+.pcard-name {
+  margin-top: 1px;
+  min-height: 2.8em;
+  font-size: 14.5px;
+}
+.pcard-meta {
+  margin-top: 1px;
+}
+.pcard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+.pcard .pcard-foot .price {
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  min-width: 0;
+}
+.pcard .pcard-foot .price-now {
+  font-size: 17px;
+  line-height: 1.2;
+}
+.pcard .pcard-foot .price-old {
+  font-size: 12px;
+  line-height: 1.2;
+}
+.pcard-add {
+  width: auto;
+  height: 36px;
+  padding: 0 12px;
+  gap: 6px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* ---------- Урсдаг барааны мөр ---------- */
+.pmarquee {
+  overflow: hidden;
+  margin-top: -6px;
+  padding: 6px 0 12px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+}
+.pmarquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--dur, 70s) linear infinite;
+}
+.pmarquee:hover .pmarquee-track,
+.pmarquee.is-paused .pmarquee-track {
+  animation-play-state: paused;
+}
+.pmarquee-group {
+  display: flex;
+  gap: 16px;
+  padding-right: 16px;
+}
+.pmarquee .pcard {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+/* ---------- Гишүүнчлэл: компакт ---------- */
+.loyalty2 {
+  padding: 26px 30px 24px;
+  border-radius: 18px;
+}
+.loyalty2-leaf {
+  width: 240px;
+  right: -60px;
+  top: -80px;
+}
+.loyalty2-head {
+  max-width: none;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 16px;
+}
+.loyalty2-head .kicker {
+  flex-basis: 100%;
+}
+.loyalty2-head h2 {
+  font-size: 24px;
+  margin: 2px 0 0;
+}
+.loyalty2-head p {
+  font-size: 14px;
+}
+.loyalty2-body {
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 18px;
+}
+.lstairs-cards {
+  gap: 10px;
+}
+.lcard {
+  height: calc(104px + var(--i) * 32px);
+  padding: 12px 14px;
+  border-radius: 14px;
+}
+.lcard-step {
+  font-size: 10px;
+}
+.lcard-name {
+  font-size: 14px;
+  margin-top: 0;
+}
+.lcard-pct {
+  font-size: 36px;
+}
+.lcard-label {
+  margin-top: 4px;
+  font-size: 12.5px;
+}
+.lcard-leaf {
+  width: 88px;
+  right: -20px;
+  bottom: -20px;
+}
+.lcard-ribbon {
+  top: 10px;
+  right: -40px;
+  width: 128px;
+  padding: 3px 0;
+  font-size: 10px;
+}
+.lcard.is-current {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+.lprogress {
+  height: 4px;
+  margin-top: 12px;
+}
+.lprogress-dot {
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  right: -7px;
+  box-shadow: 0 0 0 4px rgba(221, 251, 168, 0.22);
+}
+.lprogress-labels {
+  margin-top: 6px;
+  gap: 10px;
+  font-size: 11.5px;
+}
+.lside {
+  gap: 6px;
+  padding: 16px 18px;
+  border-radius: 14px;
+}
+.lside-seq b {
+  font-size: 34px;
+}
+.lside-seq span {
+  font-size: 14px;
+}
+.lside-pct {
+  font-size: 18px;
+}
+.lside-note,
+.lside-lead {
+  font-size: 13px;
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.lside-lead {
+  font-size: 14.5px;
+}
+.lside-list {
+  gap: 4px;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.lside .btn {
+  height: 38px;
+}
+.lside-link {
+  font-size: 12px;
+}
+
+/* ---------- v4 responsive ---------- */
+@media (max-width: 1180px) {
+  .pgrid-home {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .pgrid-listing {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 980px) {
+  .pgrid-home,
+  .pgrid-listing {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .hero-group {
+    --k: 0.85;
+    height: 360px;
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 640px) {
+  .pgrid.pgrid-listing {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pcard-img {
+    padding: 8px 10px 2px;
+  }
+  .pcard-body {
+    padding: 0 10px 10px;
+  }
+  .pcard-name {
+    font-size: 13px;
+  }
+  .pcard .pcard-foot .price-now {
+    font-size: 14.5px;
+  }
+  .pcard-foot {
+    padding-top: 8px;
+    gap: 6px;
+  }
+  .pcard-add {
+    width: 36px;
+    height: 34px;
+    padding: 0;
+  }
+  .pcard-add .add-label {
+    display: none;
+  }
+  .pmarquee .pcard {
+    width: 200px;
+  }
+  .pmarquee-group {
+    gap: 10px;
+    padding-right: 10px;
+  }
+  .hero-group {
+    --k: 0.62;
+    height: 270px;
+  }
+  .hero-group .hero-badge {
+    width: 66px;
+    height: 66px;
+  }
+  .hero-group .hero-badge b {
+    font-size: 17px;
+  }
+  .hero-group .hero-badge small {
+    font-size: 8.5px;
+  }
+  .hero-group .hero-price-card {
+    top: 0;
+    max-width: 170px;
+  }
+  .loyalty2 {
+    padding: 20px 14px 16px;
+  }
+  .loyalty2-head h2 {
+    font-size: 20px;
+  }
+  .loyalty2-head p {
+    font-size: 13px;
+  }
+  .lstairs-scroll {
+    margin: 0 -14px;
+    padding: 12px 14px 2px;
+  }
+  .lstairs {
+    min-width: calc(var(--n) * 104px + (var(--n) - 1) * 8px);
+  }
+  .lcard {
+    height: calc(92px + var(--i) * 22px);
+    padding: 10px;
+  }
+  .lcard-pct {
+    font-size: 26px;
+  }
+  .lcard-name {
+    font-size: 12.5px;
+  }
+  .lcard-label {
+    font-size: 11px;
+  }
+  .lcard-ribbon {
+    right: -44px;
+    top: 8px;
+    font-size: 8px;
+  }
+  .lprogress-labels {
+    font-size: 10px;
+  }
+  .lside {
+    padding: 14px;
+  }
+  .lside-seq b {
+    font-size: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pmarquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .pmarquee-track {
+    animation: none;
+  }
+  .pmarquee-group[aria-hidden='true'] {
+    display: none;
+  }
+}
+.cselect-native {
+  left: 0;
+  top: 0;
+}
+@media (max-width: 980px) {
+  .loyalty2-body {
+    grid-template-columns: 1fr;
+  }
+}
+.hero-cut.slot-1 {
+  --x: 19%;
+}
+.hero-cut.slot-2 {
+  --x: 81%;
+}
+.hero-cut.slot-3 {
+  --x: 34%;
+}
+.hero-cut.slot-4 {
+  --x: 67%;
+}
+.hero-group .hero-badge {
+  left: 2%;
+  top: 2%;
+}
+.lcard {
+  height: calc(122px + var(--i) * 24px);
+}
+.lcard-pct {
+  font-size: 34px;
+}
+@media (max-width: 640px) {
+  .lcard {
+    height: calc(104px + var(--i) * 18px);
+  }
+  .lcard-pct {
+    font-size: 24px;
+  }
+}
+.hero-cut.slot-0 {
+  --b: 64px;
+}
+.hero-cut.slot-1 {
+  --x: 17%;
+  --b: 50px;
+}
+.hero-cut.slot-2 {
+  --x: 83%;
+  --b: 50px;
+}
+.hero-cut.slot-3 {
+  --x: 35%;
+  --b: 10px;
+}
+.hero-cut.slot-4 {
+  --x: 64%;
+  --b: 8px;
+}
+.pcard-img {
+  aspect-ratio: 3 / 2;
+  padding: 10px 16px 2px;
+}
+@media (max-width: 640px) {
+  .pcard-img {
+    aspect-ratio: 5 / 4;
+  }
+  .lcard-step,
+  .lcard-label {
+    display: none;
+  }
+  .lcard {
+    height: calc(78px + var(--i) * 18px);
+    justify-content: space-between;
+  }
+  .lcard-name {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+  .lcard-pct {
+    margin-top: 0;
+  }
+}
+.pcard-img {
+  overflow: hidden;
+}
+.pcard-img img {
+  position: absolute;
+  top: 10px;
+  left: 16px;
+  width: calc(100% - 32px);
+  height: calc(100% - 12px);
+  object-fit: contain;
+}
+@media (max-width: 640px) {
+  .pcard-img img {
+    top: 8px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 10px);
+  }
+}

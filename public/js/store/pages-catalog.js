@@ -13,122 +13,99 @@ import {
   tierLabel,
   tierBenefit,
   paymentLogos,
+  productCard,
 } from './components.js';
 
 // ======================= Нүүр: hero =======================
-const HERO_TINTS = ['#FBEFE3', '#E7F0FA', '#FBE7EE'];
-
 function heroMain(products) {
   const b = state.site.business;
   const tiers = (state.site.loyalty && state.site.loyalty.enabled && state.site.loyalty.tiers) || [];
   const maxPct = tiers.reduce((m, t) => Math.max(m, t.pct), 0);
-  const shown = products.filter((p) => p.image).slice(0, 3);
+  const shown = products.filter((p) => p.image).slice(0, 5);
   const lead = shown[0];
   return `<div class="hero-main">
     <img src="/img/brand/logo-mark-dark.png" alt="" class="hero-leaf" aria-hidden="true">
     <div class="hero-copy">
-      <span class="hero-kicker hero-in" style="--d:0ms"><img src="/img/brand/logo-mark-dark.png" alt="" width="18" height="18">${esc(b.tagline || b.name)}</span>
-      <h1 class="hero-in" style="--d:70ms">Эрүүл жин, <span class="hl">эрч хүчтэй</span> өдөр бүр</h1>
-      <p class="hero-lead hero-in" style="--d:140ms">Жин хасах цай, кофе, капсул болон биеийн арчилгааны бүтээгдэхүүнийг албан ёсны борлуулагчаас. QPay-ээр төлж, дахин авах бүрдээ хямдрал эдлээрэй.</p>
-      <div class="hero-cta hero-in" style="--d:210ms">
+      <h1 class="hero-in" style="--d:0ms">Эрүүл жин, <span class="hl">эрч хүчтэй</span> өдөр бүр</h1>
+      <p class="hero-lead hero-in" style="--d:70ms">Жин хасах цай, кофе, капсул болон биеийн арчилгааны бүтээгдэхүүнийг албан ёсны борлуулагчаас. QPay-ээр төлж, дахин авах бүрдээ хямдрал эдлээрэй.</p>
+      <div class="hero-cta hero-in" style="--d:140ms">
         <a href="/products" class="btn btn-primary btn-lg">Бүтээгдэхүүн үзэх ${icons.arrowRight(18)}</a>
         ${tiers.length > 1 ? '<a href="#loyalty" class="btn btn-outline btn-lg" data-scroll-to="loyalty">Гишүүнчлэлийн хямдрал</a>' : ''}
       </div>
-      <ul class="hero-chips hero-in" style="--d:280ms">
+      <ul class="hero-chips hero-in" style="--d:210ms">
         ${b.hours ? `<li>${icons.clock(16)}<span>${esc(b.hours)}</span></li>` : ''}
         ${(b.phones || []).length ? `<li>${icons.phone(16)}<span>${b.phones.map((ph) => `<a href="tel:${esc(ph.replace(/\D/g, ''))}" data-external>${esc(ph)}</a>`).join(', ')}</span></li>` : ''}
         ${b.address ? `<li class="hero-chip-addr">${icons.pin(16)}<span>${esc(b.address)}</span></li>` : ''}
       </ul>
     </div>
-    <div class="hero-visual" data-hero-visual>
-      <span class="hero-shape hero-shape-a"></span>
-      <span class="hero-shape hero-shape-b"></span>
+    <div class="hero-group" data-hero-group>
+      <span class="hero-floor" aria-hidden="true"></span>
       ${shown
         .map(
-          (p, i) => `<a href="/p/${esc(encodeURIComponent(p.slug))}" class="hero-prod hero-prod-${i + 1}" style="--d:${160 + i * 110}ms;--tint:${HERO_TINTS[i]}" title="${esc(p.name)}">
-          <span class="hero-prod-inner"><img src="${esc(p.image)}" alt="${esc(p.name)}" width="400" height="400" data-tint ${i === 0 ? 'fetchpriority="high"' : ''}></span>
+          (p) => `<a href="/p/${esc(encodeURIComponent(p.slug))}" class="hero-cut" title="${esc(p.name)}">
+          <img src="/img/products/cutout/${esc(p.slug)}.png" data-fallback="${esc(p.image)}" alt="${esc(p.name)}" draggable="false">
         </a>`
         )
         .join('')}
+      ${maxPct > 0 ? `<span class="hero-badge"><b>${esc(maxPct)}%</b><small>хүртэл хямдрал</small></span>` : ''}
       ${
         lead
-          ? `<a href="/p/${esc(encodeURIComponent(lead.slug))}" class="hero-price-card" style="--d:520ms">
-          <span class="hero-price-thumb" style="--tint:${HERO_TINTS[0]}"><img src="${esc(lead.image)}" alt="" width="48" height="48"></span>
+          ? `<a href="/p/${esc(encodeURIComponent(lead.slug))}" class="hero-price-card">
+          <span class="hero-price-thumb"><img src="${esc(lead.image)}" alt="" width="48" height="48"></span>
           <span class="hero-price-text"><small>${esc(lead.brand || 'Онцлох')}</small><b>${esc(lead.name)}</b><span>${money(lead.price)}</span></span>
         </a>`
           : ''
       }
-      ${maxPct > 0 ? `<span class="hero-badge" style="--d:620ms"><span class="hero-badge-ring" aria-hidden="true"></span><b>${esc(maxPct)}%</b><small>хүртэл хямдрал</small></span>` : ''}
     </div>
   </div>`;
 }
 
-// Барааны зургийн дундаж өнгөөр картын зөөлөн дэвсгэр өнгийг тодорхойлно
-function tintFromImage(img) {
-  try {
-    const c = document.createElement('canvas');
-    c.width = c.height = 24;
-    const ctx = c.getContext('2d', { willReadFrequently: true });
-    ctx.drawImage(img, 0, 0, 24, 24);
-    const d = ctx.getImageData(0, 0, 24, 24).data;
-    let r = 0;
-    let g = 0;
-    let bl = 0;
-    let n = 0;
-    for (let i = 0; i < d.length; i += 4) {
-      const [R, G, B, A] = [d[i], d[i + 1], d[i + 2], d[i + 3]];
-      if (A < 200 || (R > 235 && G > 235 && B > 235)) continue;
-      const max = Math.max(R, G, B);
-      const min = Math.min(R, G, B);
-      const w = 1 + (max - min) / 40; // өнгөлөг пикселийг илүү жинтэй
-      r += R * w;
-      g += G * w;
-      bl += B * w;
-      n += w;
-    }
-    if (n < 5) return null;
-    const [ar, ag, ab] = [r / n, g / n, bl / n];
-    // Өнгө муутай (саарал, хүрэн) зурагт бэлэн palette ашиглана
-    if (Math.max(ar, ag, ab) - Math.min(ar, ag, ab) < 38) return null;
-    const mix = (v) => Math.round(v / n + (255 - v / n) * 0.82);
-    return `rgb(${mix(r)}, ${mix(g)}, ${mix(bl)})`;
-  } catch {
-    return null;
-  }
-}
-
-function bindHeroVisual(root) {
-  root.querySelectorAll('img[data-tint]').forEach((img) => {
-    const apply = () => {
-      const t = tintFromImage(img);
-      if (t) img.closest('.hero-prod').style.setProperty('--tint', t);
-      const thumb = root.querySelector('.hero-price-thumb');
-      if (t && thumb && img.closest('.hero-prod-1')) thumb.style.setProperty('--tint', t);
+// Cutout зургууд ачаалсны дараа хэлбэрээр нь (өндөр → арын эгнээ, өргөн → урд) байрлуулна
+function bindHeroGroup(root) {
+  const group = root.querySelector('[data-hero-group]');
+  if (!group) return;
+  const cuts = [...group.querySelectorAll('.hero-cut')];
+  const imgs = cuts.map((c) => c.querySelector('img'));
+  const wait = imgs.map(
+    (img) =>
+      new Promise((resolve) => {
+        const done = () => resolve();
+        const fail = () => {
+          const fb = img.dataset.fallback;
+          if (fb && img.getAttribute('src') !== fb) {
+            img.classList.add('is-fallback');
+            img.src = fb;
+          } else resolve();
+        };
+        if (img.complete && img.naturalWidth) return resolve();
+        img.addEventListener('load', done);
+        img.addEventListener('error', fail);
+      })
+  );
+  Promise.all(wait).then(() => {
+    // Слот: 0 төв ар, 1 зүүн ар, 2 баруун ар, 3 зүүн урд, 4 баруун урд
+    const order = cuts
+      .map((c, i) => ({ c, ratio: imgs[i].naturalWidth ? imgs[i].naturalHeight / imgs[i].naturalWidth : 1 }))
+      .sort((a, b) => b.ratio - a.ratio);
+    const n = order.length;
+    const slotsByCount = {
+      1: [0],
+      2: [1, 2],
+      3: [0, 3, 4],
+      4: [1, 2, 3, 4],
+      5: [0, 1, 2, 3, 4],
     };
-    if (img.complete && img.naturalWidth) apply();
-    else img.addEventListener('load', apply, { once: true });
-  });
-  const vis = root.querySelector('[data-hero-visual]');
-  if (!vis || reducedMotion() || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  let raf = 0;
-  const onMove = (e) => {
-    const r = vis.getBoundingClientRect();
-    const mx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
-    const my = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height) * 2 - 1));
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      vis.style.setProperty('--mx', mx.toFixed(3));
-      vis.style.setProperty('--my', my.toFixed(3));
+    const slots = slotsByCount[n] || [];
+    // Хамгийн өндөр нь төв/ар, хамгийн өргөн нь урд
+    const tallFirst = n === 5 ? [0, 1, 2, 3, 4] : slots.map((_, i) => i);
+    const SIZE = [206, 168, 168, 140, 140];
+    order.forEach((o, i) => {
+      const slot = slots[tallFirst[i]];
+      o.c.classList.add(`slot-${slot}`);
+      o.c.style.setProperty('--h', `${Math.round(SIZE[slot] * Math.sqrt(o.ratio))}px`);
     });
-  };
-  const hero = vis.closest('.hero-main');
-  const reset = () => {
-    vis.style.setProperty('--mx', '0');
-    vis.style.setProperty('--my', '0');
-  };
-  hero.addEventListener('mousemove', onMove);
-  hero.addEventListener('mouseleave', reset);
-  onLeave(() => cancelAnimationFrame(raf));
+    group.classList.add('is-ready');
+  });
 }
 
 function heroSlider(banners, products) {
@@ -217,6 +194,31 @@ function section(title, href, inner, extraCls = '') {
   </section>`;
 }
 
+// Удаан урсдаг барааны мөр (clone-ууд aria-hidden, фокусгүй)
+function productMarquee(items) {
+  const CARD = 276; // карт + зай (px), CSS-тэй тааруулна
+  const perGroup = Math.max(items.length, Math.ceil(1700 / CARD));
+  const list = [];
+  while (list.length < perGroup) list.push(...items);
+  const cards = list.map((p) => productCard(p, 0, { reveal: false })).join('');
+  const clone = cards.replace(/<a /g, '<a tabindex="-1" ').replace(/<button /g, '<button tabindex="-1" ');
+  const dur = Math.round(list.length * 6.5); // ~6.5 секунд нэг картад (12 карт ≈ 78с)
+  return `<div class="pmarquee" style="--dur:${dur}s">
+    <div class="pmarquee-track">
+      <div class="pmarquee-group">${cards}</div>
+      <div class="pmarquee-group" aria-hidden="true">${clone}</div>
+    </div>
+  </div>`;
+}
+
+function bindProductMarquee(root) {
+  // Фокус clone руу орохгүй; эх хэсгийн эхний картуудын дубликатыг (нэг group дотор) ялгахгүй
+  root.querySelectorAll('.pmarquee').forEach((m) => {
+    m.addEventListener('focusin', () => m.classList.add('is-paused'));
+    m.addEventListener('focusout', () => m.classList.remove('is-paused'));
+  });
+}
+
 // ======================= Гишүүнчлэл =======================
 export function loyaltySection() {
   const l = state.site.loyalty;
@@ -236,11 +238,6 @@ export function loyaltySection() {
       <a href="/account/loyalty" class="lside-link">Миний гишүүнчлэл</a>`
     : `<span class="lside-kicker">Эхлэхэд амархан</span>
       <p class="lside-lead">Бүртгүүлээд захиалга бүрээрээ шатаа ахиулж, <b>${esc(tiers[n - 1].pct)}%</b> хүртэл хямдрал аваарай.</p>
-      <ul class="lside-list">
-        <li>${icons.check(16)} Карт, код шаардлагагүй</li>
-        <li>${icons.check(16)} Хямдрал сагсанд автоматаар</li>
-        <li>${icons.check(16)} Утас эсвэл и-мэйлээр бүртгүүлнэ</li>
-      </ul>
       <a href="/register" class="btn btn-accent btn-block">Бүртгүүлэх ${icons.arrowRight(16)}</a>
       <a href="${esc(loginUrl('/'))}" class="lside-link">Бүртгэлтэй юу? Нэвтрэх</a>`;
 
@@ -331,8 +328,8 @@ export async function homePage({ app, token }) {
   loading(app, 'home');
   const [featured, fresh, popular, all] = await Promise.all([
     api('/store/products?featured=1&limit=12'),
-    api('/store/products?sort=new&limit=12'),
-    api('/store/products?sort=popular&limit=12'),
+    api('/store/products?sort=new&limit=4'),
+    api('/store/products?sort=popular&limit=4'),
     api('/store/products?limit=100&sort=popular'),
   ]);
   if (isStale(token)) return;
@@ -349,14 +346,15 @@ export async function homePage({ app, token }) {
       <div class="perk reveal" style="--d:180ms">${icons.shield(26)}<div><b>Баталгаат бараа</b><span>Албан ёсны борлуулагч</span></div></div>
     </div>
     ${categoryTiles(images)}
-    ${featured.items.length ? section((site.home && site.home.featured_title) || 'Онцлох бүтээгдэхүүн', '/products', productGrid(featured.items, 'pgrid-home')) : ''}
+    ${featured.items.length ? section((site.home && site.home.featured_title) || 'Онцлох бүтээгдэхүүн', '/products', productMarquee(featured.items), 'section-marquee') : ''}
     ${loyaltySection()}
     ${fresh.items.length ? section('Шинэ бүтээгдэхүүн', '/products?sort=new', productGrid(fresh.items, 'pgrid-home')) : ''}
     ${popular.items.length ? section('Их борлуулалттай', '/products?sort=popular', productGrid(popular.items, 'pgrid-home')) : ''}
     ${tipBlock()}
   </div>`;
   bindSlider(app);
-  bindHeroVisual(app);
+  bindHeroGroup(app);
+  bindProductMarquee(app);
   // Гар утсан дээр одоогийн шатыг харагдах байрлалд гүйлгэнэ
   const cur = app.querySelector('.lcard.is-current');
   const sc = app.querySelector('.lstairs-scroll');

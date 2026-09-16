@@ -9,7 +9,7 @@
     "dev": "node --watch server.js",
     "test": "node --test test/*.test.js",
     "seed": "node scripts/seed.js",
-    "extract": "node scripts/extract-images.js && node scripts/export-csv.js",
+    "extract": "node scripts/extract-images.js && node scripts/cutout-images.js && node scripts/export-csv.js",
     "admin": "node scripts/set-admin.js"
   },
   "engines": {

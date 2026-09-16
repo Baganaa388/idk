@@ -179,7 +179,7 @@ export async function buttonAdd(btn, productId, qty = 1, { silent = false, feedb
   btn.classList.remove('is-loading');
   if (cart && feedback && btn.isConnected) {
     btn.classList.add('is-added');
-    btn.innerHTML = '<svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="tick" d="m5 12 5 5 9-10"/></svg><span>Нэмэгдлээ</span>';
+    btn.innerHTML = '<svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="tick" d="m5 12 5 5 9-10"/></svg><span class="add-label">' + (btn.classList.contains('pcard-add') ? 'Нэмсэн' : 'Нэмэгдлээ') + '</span>';
     setTimeout(() => {
       if (!btn.isConnected) return;
       btn.classList.remove('is-added');
